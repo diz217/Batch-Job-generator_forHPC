@@ -27,5 +27,14 @@ No workflow assumptions. No fixed naming rules. Flexible for generic job generat
 
 ## Key features
 
-### Config format
-d
+- `key=values` per line. Invalid lines or empty lines will be skipped. Comment lines (`#...`) will be skipped.
+- Quotes and whitespace around keys/values are automatically stripped.
+- Automatic classification of values:
+  - strings containing `{...}` -> patterns
+  - filepath::idx -> matrix column input
+  - filepath/constant string
+- All filepaths will be checked for existence. If not existent, the value is downgraded to a constant string value and a warning message is issued.
+  - in the case of matrix input, both the filepath and the column index will be checked for existence. Proper error messages would be issued if needed.
+- For the pattern-type values, pure number keys are accepted, and normal python formatting syntax is accepted.
+  - The common syntax associated with HPC submission commands are encoded to recognized this type of input. For this type of patterns, multiple keys can be entered into the `{...}` with any delimiter.
+  -       
