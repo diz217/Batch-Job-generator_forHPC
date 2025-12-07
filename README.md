@@ -27,14 +27,24 @@ No workflow assumptions. No fixed naming rules. Flexible for generic job generat
 
 ## Key features
 
-- `key=values` per line. Invalid lines or empty lines will be skipped. Comment lines (`#...`) will be skipped.
-- Quotes and whitespace around keys/values are automatically stripped.
-- Automatic classification of values:
-  - strings containing `{...}` -> patterns
-  - filepath::idx -> matrix column input
-  - filepath/constant string
-- All filepaths will be checked for existence. If not existent, the value is downgraded to a constant string value and a warning message is issued.
+- **Format: `key=values` per line.**
+  - Invalid lines or empty lines will be skipped. Comment lines (`#...`) will be skipped.
+- **Quotes and whitespace around keys/values are automatically stripped.**
+- **Automatic classification of values:**
+  - Strings containing `{...}` -> patterns
+  - Filepath::idx -> matrix column input
+  - Filepath/constant string
+- **All filepaths will be checked for existence**:
+  - If not existent, the value is downgraded to a constant string value and a warning message is issued.
   - in the case of matrix input, both the filepath and the column index will be checked for existence. Proper error messages would be issued if needed.
-- For the pattern-type values, pure number keys are accepted, and normal python formatting syntax is accepted.
+- **Pattern-type values: pure number keys are accepted, and normal python formatting syntax is accepted.**
   - The common syntax associated with HPC submission commands are encoded to recognized this type of input. For this type of patterns, multiple keys can be entered into the `{...}` with any delimiter.
-  -       
+- **Dependency-aware pattern expansion:**
+  - Pattern-type values format a graph that is automatically topologically sorted.
+  - Cycles will be detected and reported.
+  - Any order of input in the config file is supported because of this feature.
+- **Master job template validation:**
+  - If a master job is not detected, the system will prompt the user to enter one, which will be checked for existence.
+- **Jobname key validation:**
+  - If there is submission command key, the jobname key would be missing. In this case, the system searches for keys that somewhat resemble the string `jobname`. 
+  - If the system find 0 or more than 1 such keys, user will be prompted to enter or select the keyname and/or the value in patterns/paths. Proper checks will be done to the input.  
