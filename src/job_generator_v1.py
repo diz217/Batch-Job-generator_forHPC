@@ -73,6 +73,7 @@ def check_jobname(config,mask):
                 jobkey = m.group(1).strip()
                 if jobkey !='jobname':
                     config['jobname'] = config.pop(jobkey)
+                    mask.pop(jobkey); mask['jobname'] = False
                     for key,val in config.items(): config[key] = val.replace('{'+jobkey+'}','{jobname}')
                 return 
     pattern = re.compile(r'job(s)?[_-]*(name|key)?(s)?(\d{1})?',re.IGNORECASE)
@@ -271,6 +272,7 @@ number_key_preprocess(config,spec)
 job_specs = read_spec(config,spec)
 ## write-in
 job_gen(config,spec,mask,job_specs)
+
 
 
 
