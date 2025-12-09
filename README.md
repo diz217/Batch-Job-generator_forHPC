@@ -47,6 +47,8 @@ No workflow assumptions. No fixed naming rules. Flexible for generic job generat
 - **Jobname key validation:**
   - If there is submission command key, the jobname key would be missing. In this case, the system searches for keys that somewhat resemble the string `jobname`. 
   - If the system find 0 or more than 1 such keys, user will be prompted to enter or select the keyname and/or the value in patterns/paths. Proper checks will be done to the input.
+- **Masked keys:**
+  - Prefixing a key with a backtick `` ` `` prevents it from being matched and substituted in the master job template.  
 - **Job generation:**
   - Job paths will be extracted from jobname input and applied to the submission command file.
 ## Command-line usage
@@ -65,7 +67,11 @@ chmod +x job_generator_v1.py
 setenv PATH "${PATH}:${HOME}/src"
 rehash
 ```
-4. Run the script from the directory containing the config file:
+4. Remove any Windows CRLF line endings (^M) from the script (if needed), e.g:
+```
+sed 's/\r$//' job_generator_v1.py
+```
+5. Run the script as a command in the directory containing the config file:
 ```
 job_generator_v1.py config.conf
 ```    
