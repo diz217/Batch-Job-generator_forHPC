@@ -173,6 +173,7 @@ def read_spec(config,spec):
         if len(list_specs[key]) !=len_specs:
             raise Exception(f"Data length not uniform across different inputs, check '{key}'")
     for key in spec['constant']:
+        if not len_specs: len_specs = 1
         list_specs[key] = [config[key]]*len_specs
     job_specs = []
     for row in range(len_specs):
@@ -263,6 +264,7 @@ number_key_preprocess(config,spec)
 job_specs = read_spec(config,spec)
 ## write-in
 job_gen(config,spec,mask,job_specs)
+
 
 
 
