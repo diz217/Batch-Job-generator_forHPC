@@ -254,8 +254,12 @@ else:
     cpath = sys.argv[1]
     if not os.path.exists(cpath):
         raise Exception(f"Path '{cpath}' does not exist")
+## chdir to config directory (enabling multi-directory running)
+cfg_path = Path(cpath).expanduser().resolve()
+os.chdir(cfg_path.parent)
+cfg_name = cfg_path.name
 ## read in config
-config,mask = parse_config(cpath)
+config,mask = parse_config(cfg_name)
 ## locate the jobname folder, classify the input keys/placeholders
 spec = classify_spec(config,mask)
 ## reorder the patterned texts according to in-degrees
@@ -266,6 +270,7 @@ number_key_preprocess(config,spec)
 job_specs = read_spec(config,spec)
 ## write-in
 job_gen(config,spec,mask,job_specs)
+
 
 
 
